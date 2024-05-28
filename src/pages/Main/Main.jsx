@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Header from "pages/Main/components/Header";
+import Navigation from "components/Navigation";
+import RecommendService from "pages/Main/components/RecommendService";
 
 function Home({ user }) {
+  const navigate = useNavigate();
+
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("refreshToken");
+    navigate("/login");
+  };
+
+
   return (
-    <div style={{ fontSize: "24px" }}>
-      <p>ID: {user.id}</p>
-      <p>이름: {user.userName}</p>
-      <p>은행: {user.bankName}</p>
-      <p>계좌: {user.bankAccount}</p>
-      <p>캐릭터ID: {user.profileImg}</p>
-      
-    </div>
+    <>
+      <Header handleLogout={handleLogout} />
+    
+      <RecommendService navigate={navigate} />
+      <Navigation />
+    </>
   );
 }
 
