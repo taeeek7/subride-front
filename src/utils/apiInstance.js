@@ -4,7 +4,7 @@ const getBaseUrl = (serviceName) => {
   switch (serviceName) {
     case "member":
       return "http://localhost:18080";
-    case "recommend":
+    case "subrecommend":
       return "http://localhost:18081";
     case "mysub":
       return "http://localhost:18082";
