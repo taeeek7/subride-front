@@ -9,12 +9,12 @@ function SubscriptItem({ item, index }) {
       <ListItemAvatar>
         <Avatar
           src={process.env.PUBLIC_URL + `/service/${item.logo}`}
-          alt={item.serviceName}
+          alt={item.subName}
         />
       </ListItemAvatar>
       <ListItemText
-        primary={item.serviceName}
-        secondary={`${item.fee.toLocaleString("ko-KR")}원(최대 ${item.maxUser}명)`}
+        primary={item.subName}
+        secondary={`${item.fee.toLocaleString("ko-KR")}원(최대 ${item.maxShareNum}명)`}
         primaryTypographyProps={{ fontSize: "15px" }}
       />
     </ListItem>
