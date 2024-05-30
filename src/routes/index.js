@@ -5,6 +5,7 @@ import PrivateRouter from "components/PrivateRouter";
 import AuthRoutes from "routes/auth.routes";
 import MainRoutes from "routes/main.routes";
 import SubscriptionRoutes from "routes/subscription.routes";
+import SubGroupRoutes from "routes/subgroup.routes";
 
 const AppRoutes = ({ user, handleAfterLogin }) => {
   return (
@@ -13,6 +14,7 @@ const AppRoutes = ({ user, handleAfterLogin }) => {
       <Route path="/*" element={<PrivateRouter isLoggedIn={!!user} />}>
         <Route path="/*" element={<MainRoutes user={user} />} />
         <Route path="subscription/*" element={<SubscriptionRoutes user={user} />} />
+        <Route path="subgroup/*" element={<SubGroupRoutes user={user} />} />
       </Route>
     </Routes>
   );

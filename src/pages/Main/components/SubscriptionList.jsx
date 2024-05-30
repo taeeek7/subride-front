@@ -67,7 +67,7 @@ const SubscriptionListContainer = styled.div`
   }
 `;
 
-export const getSubscriptionList = async (userId) => {
+const getSubscriptionList = async (userId) => {
   try {
     const { data } = await api("mysub").get("/my-subs", {
       params: { userId },
@@ -78,9 +78,14 @@ export const getSubscriptionList = async (userId) => {
   }
 };
 
-function SubscriptionList({ user, navigate }) {
+function SubscriptionList({ user, navigate, onTotalFee }) {
   const [subscriptionList, setSubscriptionList] = useState([]);
-
+  const [totalFee, setTotalFee] = useState({
+    payedFee: 0,
+    discountedFee: 0,
+    feeLevel: 0,
+  });
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -88,6 +93,29 @@ function SubscriptionList({ user, navigate }) {
           getSubscriptionList(user.id),
         ]);
         setSubscriptionList(subscriptionList);
+
+        // totalFee 객체 생성
+        const newTotalFee = subscriptionList.reduce(
+          (acc, item) => {
+            acc.payedFee += item.payedFee;
+            acc.discountedFee += item.discountedFee;
+            return acc;
+          },
+          { payedFee: 0, discountedFee: 0, feeLevel: 0 }
+        );
+
+        // feeLevel 계산
+        let feeLevel = 0;
+        if (newTotalFee.payedFee >= 200000) {
+          feeLevel = 3;
+        } else if (newTotalFee.payedFee >= 100000) {
+          feeLevel = 2;
+        } else if (newTotalFee.payedFee >= 50000) {
+          feeLevel = 1;
+        }
+        newTotalFee.feeLevel = feeLevel;
+
+        setTotalFee(newTotalFee);
       } catch (err) {
         console.log(err);
       }
@@ -95,6 +123,11 @@ function SubscriptionList({ user, navigate }) {
 
     fetchData();
   }, [user]);
+
+  useEffect(() => {
+    onTotalFee(totalFee);
+  }, [totalFee, onTotalFee]);
+
 
   const handleNavigateToMySubscription = () => {
     navigate("/subscription/mysubscription");

@@ -178,8 +178,8 @@ function ServiceDetail({ user }) {
         draggable: false, // 드래그 가능
       });
     } catch (err) {
-      console.log(err);
-      toast.error(err.message, { autoClose: 300 });
+      //console.log(err);
+      toast.error(err.response.data.message, { autoClose: 300 });
       setIsLoading(false);
     }
   };
@@ -204,7 +204,7 @@ function ServiceDetail({ user }) {
       }
     } catch (err) {
       //console.log(err);
-      toast.error(`구독 취소에 실패했습니다.(${err.message})`, {
+      toast.error(`구독 취소에 실패했습니다.(${err.response.data.message})`, {
         autoClose: 500,
       });
     }

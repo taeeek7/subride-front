@@ -50,7 +50,7 @@ const getCategories = async () => {
 
 const getEnrollList = async (categoryId, userId) => {
   try {
-    const { data } = await api("subrecommend").get("/subrecommend/list", {
+    const { data } = await api("subrecommend").get("/subrecommend/non-subscribe-list", {
       params: { categoryId, userId },
     });
     return data.response;
