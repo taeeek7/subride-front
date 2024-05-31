@@ -4,6 +4,7 @@ import BackHeader from "components/BackHeader";
 import api from "utils/apiInstance";
 import GroupInfo from "./components/GroupInfo";
 import InvitationButtonComponent from "./components/InvitationButton";
+import PaymentDetail from "./components/PaymentDetail";
 import Navigation from "components/Navigation";
 
 function GroupDetail({ user }) {
@@ -36,7 +37,7 @@ function GroupDetail({ user }) {
       <BackHeader text="썹 그룹 상세"></BackHeader>
       {groupData && (<GroupInfo groupData={groupData} />)}
       {groupData && (<InvitationButtonComponent groupData={groupData} user={user} />)}
-    
+      <PaymentDetail groupId={groupId} groupData={groupData} />
       <Navigation />
     </>
   );

@@ -3,6 +3,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Button from "@mui/material/Button";
 import { useState, useEffect, useCallback } from "react";
+import api from "utils/apiInstance";
 
 const PaymentDetailSearchContainer = styled.div`
   position: absolute;
@@ -64,65 +65,53 @@ const PaymentDetailContainer = styled.div`
   }
 `;
 
-const PaymentDetail = ({ serviceData }) => {
-  const [filteredPays, setFilteredPays] = useState([]);
+const PaymentDetail = ({ groupId, groupData }) => {
+  const [pays, setPays] = useState([]);
   const [sortOrder, setSortOrder] = useState("desc");
-  const [selectedFilter, setSelectedFilter] = useState("3개월");
+  const [selectedFilter, setSelectedFilter] = useState("THREE_MONTHS");
+
+  const getPayHistory = useCallback(async (groupId, period) => {
+    try {
+      const { data } = await api("transfer").get("/transfer", {
+        params: { groupId, period },
+      });
+      return data.response;
+    } catch (err) {
+      return err;
+    }
+  }, []);
+
+  const sortData = useCallback((data) => {
+    return [...data].sort((a, b) => {
+      if (sortOrder === "desc") {
+        return new Date(b.transferDate) - new Date(a.transferDate);
+      } else {
+        return new Date(a.transferDate) - new Date(b.transferDate);
+      }
+    });
+  }, [sortOrder]);
 
   useEffect(() => {
-    const threeMonthsAgo = new Date();
-    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-    const filteredData = serviceData.pays.filter((item) => {
-      const paymentDate = new Date(item.payDateTime);
-      return paymentDate >= threeMonthsAgo;
-    });
-    const sortedPays = [...filteredData].sort((a, b) => {
-      return new Date(b.payDateTime) - new Date(a.payDateTime);
-    });
-    setFilteredPays(sortedPays);
-  }, [serviceData.pays]);
+    const fetchData = async () => {
+      const pays = await getPayHistory(groupId, selectedFilter);
+      const sortedPays = sortData(pays);
+      setPays(sortedPays);
+    };
 
-  const calculateFee = useCallback((fee, usersLength) => {
-    return Math.ceil(fee / usersLength).toLocaleString("ko-KR");
-  }, []);
+    fetchData();
+  }, [groupId, selectedFilter, getPayHistory, sortData]);
 
   const handleFilterClick = (filter) => {
     setSelectedFilter(filter);
-    if (filter === "3개월") {
-      const threeMonthsAgo = new Date();
-      threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-      const filteredData = serviceData.pays.filter((item) => {
-        const paymentDate = new Date(item.payDateTime);
-        return paymentDate >= threeMonthsAgo;
-      });
-      const sortedData = sortData(filteredData);
-      setFilteredPays(sortedData);
-    } else if (filter === "전체") {
-      const sortedData = sortData(serviceData.pays);
-      setFilteredPays(sortedData);
-    }
-  };
-  
-  const sortData = (data) => {
-    return [...data].sort((a, b) => {
-      if (sortOrder === "desc") {
-        return new Date(b.payDateTime) - new Date(a.payDateTime);
-      } else {
-        return new Date(a.payDateTime) - new Date(b.payDateTime);
-      }
-    });
   };
 
   const handleSortClick = () => {
-    const sortedData = [...filteredPays].sort((a, b) => {
-      if (sortOrder === "desc") {
-        return new Date(a.payDateTime) - new Date(b.payDateTime);
-      } else {
-        return new Date(b.payDateTime) - new Date(a.payDateTime);
-      }
-    });
-    setFilteredPays(sortedData);
     setSortOrder(sortOrder === "desc" ? "asc" : "desc");
+  };
+
+  const getUserName = (memberId) => {
+    const member = groupData.members.find((member) => member.userId === memberId);
+    return member ? member.userName : memberId;
   };
 
   return (
@@ -132,9 +121,9 @@ const PaymentDetail = ({ serviceData }) => {
           <Button
             variant="text"
             size="small"
-            onClick={() => handleFilterClick("3개월")}
+            onClick={() => handleFilterClick("THREE_MONTHS")}
             className={`searchTextD ${
-              selectedFilter === "3개월" ? "selectedButton" : ""
+              selectedFilter === "THREE_MONTHS" ? "selectedButton" : ""
             }`}
           >
             3개월
@@ -142,9 +131,9 @@ const PaymentDetail = ({ serviceData }) => {
           <Button
             variant="text"
             size="small"
-            onClick={() => handleFilterClick("전체")}
+            onClick={() => handleFilterClick("ONE_YEAR")}
             className={`searchTextD ${
-              selectedFilter === "전체" ? "selectedButton" : ""
+              selectedFilter === "ONE_YEAR" ? "selectedButton" : ""
             }`}
           >
             전체
@@ -174,14 +163,14 @@ const PaymentDetail = ({ serviceData }) => {
       </PaymentDetailSearchContainer>
 
       <PaymentDetailContainer>
-        {filteredPays.map((item) => (
+        {pays.map((item) => (
           <div className="newcss" key={item.id}>
             <div className="firstClass">
               <div className="item" style={{ width: "100px" }}>
-                {new Date(item.payDateTime).toLocaleDateString()}
+                {new Date(item.transferDate).toLocaleDateString()}
               </div>
               <div className="item" style={{ flexGrow: 1, textAlign: "left" }}>
-                <div>{item.username}</div>
+                <div>{groupData && getUserName(item.memberId)}</div>
                 <div style={{ fontSize: "10px", color: "#C59AC9" }}>
                   #자동이체
                 </div>
@@ -194,11 +183,7 @@ const PaymentDetail = ({ serviceData }) => {
             </div>
 
             <div className="item" style={{ fontFamily: "KBFGTextB" }}>
-              {calculateFee(
-                serviceData.subscribeDTO.fee,
-                serviceData.users.length
-              )}
-              원
+              {item.amount.toLocaleString("ko-KR")}원
             </div>
           </div>
         ))}
