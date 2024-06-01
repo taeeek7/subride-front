@@ -74,12 +74,13 @@ const getSubscriptionList = async (userId) => {
     });
     return data.response;
   } catch (err) {
-    return err;
+    console.log(err.response.data.message);
+    return null;
   }
 };
 
 function SubscriptionList({ user, navigate, onTotalFee }) {
-  const [subscriptionList, setSubscriptionList] = useState([]);
+  const [subscriptionList, setSubscriptionList] = useState(null);
   const [totalFee, setTotalFee] = useState({
     payedFee: 0,
     discountedFee: 0,
@@ -92,7 +93,10 @@ function SubscriptionList({ user, navigate, onTotalFee }) {
         const [subscriptionList] = await Promise.all([
           getSubscriptionList(user.id),
         ]);
+        
         setSubscriptionList(subscriptionList);
+       
+        if(subscriptionList == null) return;
 
         // totalFee 객체 생성
         const newTotalFee = subscriptionList.reduce(
@@ -151,7 +155,7 @@ function SubscriptionList({ user, navigate, onTotalFee }) {
         </Button>
       </div>
       <ul className="images">
-        {subscriptionList.map((item) => (
+        {subscriptionList && subscriptionList.map((item) => (
           <li
             key={item.subId}
             className="image-box"

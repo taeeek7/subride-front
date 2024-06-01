@@ -51,7 +51,7 @@ const MySubscriptionPage = styled.div`
 `;
 
 function MySubscription({ user }) {
-  const [mySubscriptionList, setMySubscriptionList] = useState([]);
+  const [mySubscriptionList, setMySubscriptionList] = useState(null);
   const navigate = useNavigate();
   const [totalFee, setTotalFee] = useState({
     payedFee: 0,
@@ -65,7 +65,8 @@ function MySubscription({ user }) {
       });
       return data.response;
     } catch (err) {
-      return err;
+      console.log(err.response.data.message);
+      return null;
     }
   }, []);
 
@@ -79,6 +80,8 @@ function MySubscription({ user }) {
   }, [user.id, getMySubscription]);
 
   useEffect(() => {
+    if(mySubscriptionList == null) return;
+    
     const newTotalFee = mySubscriptionList.reduce(
       (acc, item) => {
         acc.payedFee += item.payedFee;
@@ -137,7 +140,7 @@ function MySubscription({ user }) {
         </div>
 
         <List sx={{ width: "100%" }}>
-          {mySubscriptionList.length > 0 ? (
+          {mySubscriptionList && mySubscriptionList.length > 0 ? (
             mySubscriptionList.map((item, index) => (
               <div key={item.subId} className="list-item">
                 <div
