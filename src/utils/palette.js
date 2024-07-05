@@ -2,7 +2,7 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
     typography: {
-      fontFamily: "KBFGTextB, KBFGDisplayB",
+      fontFamily: "Nanum Gothic",
     },
     components: {
       MuiCssBaseline: {
@@ -10,7 +10,7 @@ const theme = createTheme({
           boxSizing: "border-box",
           margin: 0,
           padding: 0,
-          fontFamily: "KBFGTextB",
+          fontFamily: "Nanum Gothic",
         }
       },
   },
