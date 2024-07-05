@@ -176,8 +176,8 @@ const PaymentDetail = ({ groupId, groupData }) => {
               </div>
               <img
                 style={{ paddingLeft: "10px", width: "auto", height: "20px" }}
-                src={`/logo/KB로고.png`}
-                alt="kb로고"
+                src={`/logo/banklogo.png`}
+                alt="banklogo"
               />
             </div>
 
