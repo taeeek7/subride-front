@@ -12,11 +12,10 @@ import api from "utils/apiInstance";
 const MySubscriptionPage = styled.div`
   p {
     margin: 0;
-    font-family: KBFGTextB;
+    font-weight: bold;
   }
   .title {
     margin: 40px 0;
-    font-family: "KBFGDisplayB";
     font-size: 20px;
   }
   .pay-description {

@@ -61,7 +61,6 @@ const PaymentDetailContainer = styled.div`
 
   .item {
     margin: 0 10px;
-    font-family: "KBFGTextM";
   }
 `;
 
@@ -182,7 +181,7 @@ const PaymentDetail = ({ groupId, groupData }) => {
               />
             </div>
 
-            <div className="item" style={{ fontFamily: "KBFGTextB" }}>
+            <div className="item">
               {item.amount.toLocaleString("ko-KR")}원
             </div>
           </div>

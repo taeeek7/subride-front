@@ -14,10 +14,6 @@ const RecommendPage = styled.div`
     margin: 0;
   }
 
-  span {
-    font-family: "KBFGDisplayB";
-  }
-
   .title {
     font-size: 16px;
     margin-top: 40px;

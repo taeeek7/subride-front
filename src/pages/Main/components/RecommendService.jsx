@@ -57,7 +57,6 @@ const RecommendServiceContainer = styled.div`
     bottom: 0;
     color: #878787;
     font-size: 12px;
-    font-family: "KBFGTextM";
     display: flex;
     justify-content: center;
     align-items: center;

@@ -20,7 +20,6 @@ const SubPage = styled.div`
     padding: 0;
   }
   .title {
-    font-family: "KBFGDisplayB";
     margin-top: 0px;
   }
   .empty-message {

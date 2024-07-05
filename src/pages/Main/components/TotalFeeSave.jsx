@@ -15,7 +15,6 @@ const TotalFeeSaveContainer = styled.div`
   p.title {
     margin: 10px 0px 7px 0px;
     color: #4a483f;
-    font-family: KBFGDisplayM;
   }
   .subtitle-container {
     display: flex;
@@ -30,7 +29,6 @@ const TotalFeeSaveContainer = styled.div`
     margin: 1px 0px;
     font-size: 13px;
     color: #0e131a;
-    font-family: KBFGDisplayM;
   }
 `;
 
@@ -55,7 +53,7 @@ function TotalFeeSave({ totalFee, navigate }) {
       />
       <p className="title">
         총 구독료{" "}
-        <span style={{ fontFamily: "KBFGDisplayB" }}>
+        <span>
           {" "}
           {totalFee.payedFee && totalFee.payedFee.toLocaleString("ko-KR")} 원{" "}
         </span>

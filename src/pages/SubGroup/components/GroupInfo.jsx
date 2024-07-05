@@ -41,7 +41,6 @@ const ImgContainer = styled.div`
     font-size: 20px;
     font-weight: bold;
     margin-top: 10px;
-    font-family: "KBFGTextM";
     text-align: center;
     max-width: 80%; /* 또는 원하는 최대 너비 값 */
     overflow: hidden;
@@ -52,14 +51,12 @@ const ImgContainer = styled.div`
   .serviceName {
     font-size: 14px;
     font-weight: normal;
-    font-family: "KBFGTextM";
     text-align: center;
   }
 
   .serviceDescription {
     font-size: 14px;
     margin-top: 5px;
-    font-family: "KBFGTextM";
     text-align: center;
   }
 
@@ -143,7 +140,6 @@ const GroupInfo = ({ groupData }) => {
               style={{
                 marginTop: "10px",
                 fontSize: "17px",
-                fontFamily: "KBFGTextM",
               }}
             >
               매달 {groupData.paymentDay}일{" "}
