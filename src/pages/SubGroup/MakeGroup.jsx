@@ -12,6 +12,7 @@ import { useLocation } from "react-router";
 import CommonButton from "components/CommonButton";
 import BackHeader from "components/BackHeader";
 import api from "utils/apiInstance";
+import { toast } from "react-toastify";
 
 const payDateOptions = Array.from({ length: 31 }, (_, i) => i + 1);
 const koreanRegex = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
@@ -73,13 +74,17 @@ function MakeGroup({ user }) {
       api("mygrp")
         .post("/my-groups", groupData)
         .then((response) => {
-          //window.localStorage.setItem("invitationCode", response.data.invitationCode);
           navigate("/subgroup/success-room", {
             state: { inviteCode: response.data.response },
           });
         })
         .catch((error) => {
           console.error(error);
+          toast.error(error.response.data.message, {
+            autoClose: 500,
+            hideProgressBar: true,
+          });
+
         });
     }
   };
@@ -100,8 +105,8 @@ function MakeGroup({ user }) {
     } else {
       setServiceError(false);
     }
-
-    if (!representativeAccount) {
+    
+    if (!representativeAccount || (representativeAccount.indexOf(":") < 0)) {
       setAccountError(true);
       isValid = false;
     } else {
@@ -243,7 +248,6 @@ function MakeGroup({ user }) {
         </Stack>
       </Box>
       <CommonButton text="썹 만들기" handleClick={createGroup} />
-      
     </>
   );
 }
