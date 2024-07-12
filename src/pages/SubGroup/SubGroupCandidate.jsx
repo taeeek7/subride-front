@@ -50,7 +50,7 @@ function SubGroupCandidate({ user }) {
 
   const fetchMySub = useCallback(async () => {
     try {
-      const { data } = await api("mysub").get("/my-subs", {
+      const { data } = await api("mysub").get("/my-subs/not-join-group", {
         params: { userId: user.id },
       });
       setServiceList(data.response);
@@ -84,17 +84,15 @@ function SubGroupCandidate({ user }) {
           </button>
         </div>
         <ul>
-          {Array.isArray(serviceList) && serviceList.map((item) => (
-            !item.joinGroup ? (
-              <SubListItem
-                key={item.subId}
-                serviceId={item.subId}
-                serviceName={item.subName}
-                logo={item.logo}
-                handleClick={() => goMakeGroup(item)}
-                description={"썹 만들기"}
-              />
-            ) : null
+          {serviceList && serviceList.map((item) => (
+            <SubListItem
+              key={item.subId}
+              serviceId={item.subId}
+              serviceName={item.subName}
+              logo={item.logo}
+              handleClick={() => goMakeGroup(item)}
+              description={"썹 만들기"}
+            />
           ))}
         </ul>
       </SubPage>
