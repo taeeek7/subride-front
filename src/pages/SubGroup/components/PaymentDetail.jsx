@@ -76,7 +76,8 @@ const PaymentDetail = ({ groupId, groupData }) => {
       });
       return data.response;
     } catch (err) {
-      return err;
+      console.log(err.response.data.message);
+      return null;
     }
   }, []);
 
@@ -162,7 +163,7 @@ const PaymentDetail = ({ groupId, groupData }) => {
       </PaymentDetailSearchContainer>
 
       <PaymentDetailContainer>
-        {pays.map((item) => (
+        {pays && pays.map((item) => (
           <div className="newcss" key={item.id}>
             <div className="firstClass">
               <div className="item" style={{ width: "100px" }}>
