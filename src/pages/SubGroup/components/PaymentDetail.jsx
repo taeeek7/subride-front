@@ -65,7 +65,7 @@ const PaymentDetailContainer = styled.div`
 `;
 
 const PaymentDetail = ({ groupId, groupData }) => {
-  const [pays, setPays] = useState([]);
+  const [pays, setPays] = useState(null);
   const [sortOrder, setSortOrder] = useState("desc");
   const [selectedFilter, setSelectedFilter] = useState("THREE_MONTHS");
 
@@ -94,6 +94,7 @@ const PaymentDetail = ({ groupId, groupData }) => {
   useEffect(() => {
     const fetchData = async () => {
       const pays = await getPayHistory(groupId, selectedFilter);
+      if(pays === null) return;
       const sortedPays = sortData(pays);
       setPays(sortedPays);
     };
