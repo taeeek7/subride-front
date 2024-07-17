@@ -110,11 +110,11 @@ function SubscriptionList({ user, navigate, onTotalFee }) {
 
         // feeLevel 계산
         let feeLevel = 0;
-        if (newTotalFee.payedFee >= 200000) {
+        if (newTotalFee.payedFee >= 100000) {
           feeLevel = 3;
-        } else if (newTotalFee.payedFee >= 100000) {
+        } else if (newTotalFee.payedFee >= 60000) {
           feeLevel = 2;
-        } else if (newTotalFee.payedFee >= 50000) {
+        } else if (newTotalFee.payedFee >= 30000) {
           feeLevel = 1;
         }
         newTotalFee.feeLevel = feeLevel;
