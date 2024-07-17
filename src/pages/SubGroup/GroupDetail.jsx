@@ -11,9 +11,12 @@ function GroupDetail({ user }) {
   const location = useLocation();
   const groupId = location.state?.groupId || null;
   const [groupData, setGroupData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const getGroupData = useCallback(async () => {
     try {
+      setLoading(true);
       if (groupId !== null) {
         const { data } = await api("mygrp").get("/my-groups/" + groupId, {
           params: {
@@ -24,6 +27,9 @@ function GroupDetail({ user }) {
       }
     } catch (err) {
       console.log("error");
+      setError("그룹 데이터를 가져오는데 실패했습니다");
+    } finally {
+      setLoading(false);
     }
   }, [groupId, user]);
 
@@ -31,8 +37,10 @@ function GroupDetail({ user }) {
     getGroupData();
   }, [getGroupData]);
 
+  if (loading) return <div>로딩 중...</div>;
+  if (error) return <div>오류: {error}</div>;
 
-  return (
+  return ( 
     <>
       <BackHeader text="썹 그룹 상세"></BackHeader>
       {groupData && (<GroupInfo groupData={groupData} />)}
