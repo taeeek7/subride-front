@@ -53,23 +53,45 @@ const InvitationButtonComponent = ({ groupData, user }) => {
       setIsUserSubscribed(isSubscribed);
     }
   }, [groupData.members, userId, user]);
-
   const copyInvitationCode = () => {
-    navigator.clipboard
-      .writeText(groupData.inviteCode)
-      .then(() => {
-        toast.success("클립보드에 초대코드가 복사되었습니다.", {
-          position: "top-center",
-          autoClose: 300,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: false,
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(groupData.inviteCode)
+        .then(() => {
+          toast.success("클립보드에 초대코드가 복사되었습니다.", {
+            position: "top-center",
+            autoClose: 300,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+          });
+        })
+        .catch((err) => {
+          console.error("Failed to copy invitation code: ", err);
+          fallbackCopyInvitationCode();
         });
-      })
-      .catch((err) => {
-        console.error("Failed to copy invitation code: ", err);
-      });
+    } else {
+      fallbackCopyInvitationCode();
+    }
+  };
+  
+  const fallbackCopyInvitationCode = () => {
+    const tempInput = document.createElement('input');
+    tempInput.value = groupData.inviteCode;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+  
+    toast.success("클립보드에 초대코드가 복사되었습니다.", {
+      position: "top-center",
+      autoClose: 300,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+    });
   };
 
   const handleUnsubscribe = async () => {
