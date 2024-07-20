@@ -46,8 +46,8 @@ function TotalFeeSave({ totalFee, navigate }) {
         }}
         src={
           totalFee.feelevel
-            ? `/feelevel/feelevel${totalFee.feelevel}.jpeg`
-            : "/feelevel/feelevel0.jpeg"
+            ? `/feelevel/feelevel${totalFee.feelevel}.png`
+            : "/feelevel/feelevel0.png"
         }
         alt="bankbook"
       />
